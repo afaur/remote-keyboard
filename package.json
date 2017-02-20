@@ -13,12 +13,14 @@
   "license": "Unlicense",
   "dependencies": {
     "express": "^4.14.1",
+    "express-session": "^1.15.1",
     "pug": "^2.0.0-beta11",
     "react": "^15.4.2",
     "react-document-meta": "^2.1.1",
     "react-dom": "^15.4.2",
     "react-router": "^3.0.2",
-    "robotjs": "^0.4.5"
+    "robotjs": "^0.4.5",
+    "ws": "^2.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.23.1",

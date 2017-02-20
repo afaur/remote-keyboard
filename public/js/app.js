@@ -15,6 +15,44 @@ class Style extends Component {
 }
 
 class Keyboard extends Component {
+
+  constructor (props) {
+    super(props)
+    fetch('/login', { method: 'POST', credentials: 'same-origin' })
+      .then((response) => {
+        this.ws = new WebSocket(`ws://${location.host}`)
+        return response.ok
+          ? response.json().then((data) => JSON.stringify(data, null, 2))
+          : Promise.reject(new Error('Unexpected response'));
+      })
+      .then(() => {
+        console.log('logged in')
+      })
+      .catch((err) => { console.log(err.message) })
+    this.handleClick = this.handleClick.bind(this)
+    this.handleWsOpen = this.handleWsOpen.bind(this)
+    this.handleWsClose = this.handleWsClose.bind(this)
+    this.handleWsError = this.handleWsError.bind(this)
+  }
+
+  handleWsOpen () {
+    console.log('WebSocket open')
+  }
+
+  handleWsClose () {
+    console.log('WebSocket close')
+  }
+
+  handleWsError () {
+    console.log('WebSocket error')
+  }
+
+  handleClick (evt) {
+    if (evt.target.innerText) {
+      this.ws.send(evt.target.innerText)
+    }
+  }
+
   render () {
     const css = `
       .keyboard {
@@ -22,7 +60,7 @@ class Keyboard extends Component {
         margin: 0 auto;
         text-align: center;
       }
-      .row span {
+      .keyboard .row span {
         display: inline-block;
         border: 1px solid black;
         padding: 10px 15px;
@@ -31,7 +69,8 @@ class Keyboard extends Component {
     `
 
     return (
-      <div className='keyboard'>
+      <div onClick={this.handleClick}
+        className='keyboard'>
         <Style css={css} />
         <div className='row'>
           <span>q</span>
