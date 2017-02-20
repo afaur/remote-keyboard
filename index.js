@@ -1,11 +1,13 @@
 const ENV = process.env.NODE_ENV || 'development'
 
+const robot = require('robotjs')
+
 const http = require('http')
 const express = require('express')
 const app = express()
 const uuid = require('uuid')
 
-const server = http.createServer(app);
+const server = http.createServer(app)
 
 const session = require('express-session')
 
@@ -55,6 +57,7 @@ wss.on('connection', (ws) => {
   ws.on('message', (msg) => {
     const session = ws.upgradeReq.session;
     console.log(`WS message ${msg} from user ${session.userId}`);
+    robot.keyTap(msg);
   })
 })
 
