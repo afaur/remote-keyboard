@@ -20,7 +20,7 @@ class KeyboardContainer extends Component {
     super(props)
     fetch('/login', { method: 'POST', credentials: 'same-origin' })
       .then((response) => {
-        this.ws = new WebSocket(`ws://${location.host}`)
+        this.ws = new WebSocket(`ws://${window.location.host}`)
         return response.ok
           ? response.json().then((data) => JSON.stringify(data, null, 2))
           : Promise.reject(new Error('Unexpected response'));
@@ -28,7 +28,12 @@ class KeyboardContainer extends Component {
       .then(() => {
         console.log('logged in')
       })
-      .catch((err) => { console.log(err.message) })
+      .catch((err) => {
+        console.log(err.message)
+      })
+      this.state = {
+        shift: false,
+      }
   }
 
   handleWsOpen = () => {
@@ -44,7 +49,13 @@ class KeyboardContainer extends Component {
   }
 
   handleKeystroke = (value) => {
-    this.ws.send(value)
+    if (value === 'shift') {
+      this.setState({
+        shift: !this.state.shift,
+      })
+    } else {
+      this.ws.send(value)
+    }
   }
 
   render () {
@@ -53,6 +64,7 @@ class KeyboardContainer extends Component {
         width: 600px;
         margin: 0 auto;
         text-align: center;
+        font-family: monospace;
       }
       .keyboard .row span {
         display: inline-block;
@@ -63,19 +75,21 @@ class KeyboardContainer extends Component {
     `
 
     return (
-      <KeyboardLowerCase handleKeystroke={this.handleKeystroke} />
+      <div>
+        <Style css={css} />
+        { this.state.shift ? (
+          <KeyboardUpperCase handleKeystroke={this.handleKeystroke} />
+        ) : (
+          <KeyboardLowerCase handleKeystroke={this.handleKeystroke} />
+        ) }
+      </div>
     )
   }
 }
 
-class KeyboardLowerCase extends Component {
-
+class BaseKeyboard extends Component {
   static propTypes = {
     handleKeystroke: React.PropTypes.func.isRequired,
-  }
-
-  constructor (props) {
-    super(props)
   }
 
   handleKeystroke = (e) => {
@@ -86,26 +100,69 @@ class KeyboardLowerCase extends Component {
     }
     console.warn('Key not found', e.target)
   }
+}
 
+class KeyboardUpperCase extends BaseKeyboard {
   render () {
-    const css = `
-      .keyboard {
-        width: 600px;
-        margin: 0 auto;
-        text-align: center;
-      }
-      .keyboard .row span {
-        display: inline-block;
-        border: 1px solid black;
-        padding: 10px 15px;
-        margin: 5px;
-      }
-    `
-
     return (
       <div onClick={this.handleKeystroke}
         className='keyboard'>
-        <Style css={css} />
+        <div className='row'>
+          <span>Q</span>
+          <span>W</span>
+          <span>E</span>
+          <span>R</span>
+          <span>T</span>
+          <span>Y</span>
+          <span>U</span>
+          <span>I</span>
+          <span>O</span>
+          <span>P</span>
+        </div>
+        <div className='row'>
+          <span>A</span>
+          <span>S</span>
+          <span>D</span>
+          <span>F</span>
+          <span>G</span>
+          <span>H</span>
+          <span>J</span>
+          <span>K</span>
+          <span>L</span>
+        </div>
+        <div className='row'>
+          <span data-key="shift" className='fa fa-arrow-circle-up shift'></span>
+          <span>Z</span>
+          <span>X</span>
+          <span>C</span>
+          <span>V</span>
+          <span>B</span>
+          <span>N</span>
+          <span>M</span>
+          <span data-key="backspace" className='fa fa-arrow-circle-left backspace'></span>
+        </div>
+        <div className='row'>
+          <span className='fa fa-th-list toggle-layout'></span>
+          <span data-key="space">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span>
+          <span>.</span>
+          <span>,</span>
+          <span data-key="enter" className='fa fa-arrow-circle-down enter'></span>
+        </div>
+      </div>
+    )
+  }
+}
+
+class KeyboardLowerCase extends BaseKeyboard {
+  render () {
+    return (
+      <div onClick={this.handleKeystroke}
+        className='keyboard'>
         <div className='row'>
           <span>q</span>
           <span>w</span>
