@@ -48,9 +48,12 @@ class Keyboard extends Component {
   }
 
   handleClick (evt) {
-    if (evt.target.innerText) {
-      this.ws.send(evt.target.innerText)
+    if (evt.target.dataset && evt.target.dataset.key) {
+      return this.ws.send(evt.target.dataset.key)
+    } else if (evt.target.innerText) {
+      return this.ws.send(evt.target.innerText)
     }
+    console.warn('Key not found', evt.target)
   }
 
   render () {
@@ -96,7 +99,7 @@ class Keyboard extends Component {
           <span>l</span>
         </div>
         <div className='row'>
-          <span className='fa fa-arrow-circle-up shift'></span>
+          <span data-key="shift" className='fa fa-arrow-circle-up shift'></span>
           <span>z</span>
           <span>x</span>
           <span>c</span>
@@ -104,11 +107,11 @@ class Keyboard extends Component {
           <span>b</span>
           <span>n</span>
           <span>m</span>
-          <span className='fa fa-arrow-circle-left backspace'></span>
+          <span data-key="backspace" className='fa fa-arrow-circle-left backspace'></span>
         </div>
         <div className='row'>
           <span className='fa fa-th-list toggle-layout'></span>
-          <span>
+          <span data-key="space">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -116,7 +119,7 @@ class Keyboard extends Component {
           </span>
           <span>.</span>
           <span>,</span>
-          <span className='fa fa-arrow-circle-down enter'></span>
+          <span data-key="enter" className='fa fa-arrow-circle-down enter'></span>
         </div>
       </div>
     )

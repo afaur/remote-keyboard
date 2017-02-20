@@ -55,9 +55,10 @@ const wss = new WebSocket.Server({
 
 wss.on('connection', (ws) => {
   ws.on('message', (msg) => {
-    const session = ws.upgradeReq.session;
-    console.log(`WS message ${msg} from user ${session.userId}`);
-    robot.keyTap(msg);
+    const session = ws.upgradeReq.session
+    console.log(`WS message ${msg} from user ${session.userId}`)
+    console.log(msg)
+    robot.keyTap(msg)
   })
 })
 
