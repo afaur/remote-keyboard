@@ -22,3 +22,16 @@ process:
 ~~~
 npm start
 ~~~
+
+## Todo
+
+* Symbol Keyboard
+* Keyboard Feedback
+* Issue when div is clicked instead of span
+  * Sends `asdf` to server and fails
+
+## Features
+
+* Arrow Keys and Command Key
+* Track Pad
+* Game Controller
