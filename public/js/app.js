@@ -33,6 +33,7 @@ class KeyboardContainer extends Component {
       })
       this.state = {
         shift: false,
+        symbolic: false,
       }
   }
 
@@ -53,8 +54,17 @@ class KeyboardContainer extends Component {
       this.setState({
         shift: !this.state.shift,
       })
+    } else if (value === 'symbolic') {
+      this.setState({
+        symbolic: !this.state.symbolic,
+      })
     } else {
       this.ws.send(value)
+      if (!this.state.symbolic) {
+        this.setState({
+          shift: false,
+        })
+      }
     }
   }
 
@@ -77,11 +87,19 @@ class KeyboardContainer extends Component {
     return (
       <div>
         <Style css={css} />
-        { this.state.shift ? (
-          <KeyboardUpperCase handleKeystroke={this.handleKeystroke} />
-        ) : (
-          <KeyboardLowerCase handleKeystroke={this.handleKeystroke} />
-        ) }
+        {
+          this.state.symbolic &&
+            this.state.shift && 
+            <KeyboardSymbolic handleKeystroke={this.handleKeystroke} />
+          ||
+          this.state.symbolic &&
+            <KeyboardNumeric handleKeystroke={this.handleKeystroke} />
+          ||
+          this.state.shift &&
+            <KeyboardUpperCase handleKeystroke={this.handleKeystroke} />
+          ||
+            <KeyboardLowerCase handleKeystroke={this.handleKeystroke} />
+        }
       </div>
     )
   }
@@ -93,12 +111,14 @@ class BaseKeyboard extends Component {
   }
 
   handleKeystroke = (e) => {
-    if (e.target.dataset && e.target.dataset.key) {
-      return this.props.handleKeystroke(e.target.dataset.key)
-    } else if (e.target.innerText) {
-      return this.props.handleKeystroke(e.target.innerText)
+    if (e.target.tagName === 'SPAN') {
+      if (e.target.dataset && e.target.dataset.key) {
+        return this.props.handleKeystroke(e.target.dataset.key)
+      } else if (e.target.innerText) {
+        return this.props.handleKeystroke(e.target.innerText)
+      }
+      console.warn('Key not found', e.target)
     }
-    console.warn('Key not found', e.target)
   }
 }
 
@@ -142,7 +162,7 @@ class KeyboardUpperCase extends BaseKeyboard {
           <span data-key="backspace" className='fa fa-arrow-circle-left backspace'></span>
         </div>
         <div className='row'>
-          <span className='fa fa-th-list toggle-layout'></span>
+          <span data-key="symbolic" className='fa fa-th-list toggle-layout'></span>
           <span data-key="space">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -198,7 +218,7 @@ class KeyboardLowerCase extends BaseKeyboard {
           <span data-key="backspace" className='fa fa-arrow-circle-left backspace'></span>
         </div>
         <div className='row'>
-          <span className='fa fa-th-list toggle-layout'></span>
+          <span data-key="symbolic" className='fa fa-th-list toggle-layout'></span>
           <span data-key="space">
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -207,6 +227,112 @@ class KeyboardLowerCase extends BaseKeyboard {
           </span>
           <span>.</span>
           <span>,</span>
+          <span data-key="enter" className='fa fa-arrow-circle-down enter'></span>
+        </div>
+      </div>
+    )
+  }
+}
+
+class KeyboardNumeric extends BaseKeyboard {
+  render () {
+    return (
+      <div onClick={this.handleKeystroke}
+        className='keyboard'>
+        <div className='row'>
+          <span>1</span>
+          <span>2</span>
+          <span>3</span>
+          <span>4</span>
+          <span>5</span>
+          <span>6</span>
+          <span>7</span>
+          <span>8</span>
+          <span>9</span>
+          <span>0</span>
+        </div>
+        <div className='row'>
+          <span>-</span>
+          <span>/</span>
+          <span>:</span>
+          <span>;</span>
+          <span>(</span>
+          <span>)</span>
+          <span>$</span>
+          <span>&</span>
+          <span>@</span>
+          <span>&quot;</span>
+        </div>
+        <div className='row'>
+          <span data-key="shift">#+=</span>
+          <span>.</span>
+          <span>,</span>
+          <span>?</span>
+          <span>!</span>
+          <span>&apos;</span>
+          <span data-key="backspace" className='fa fa-arrow-circle-left backspace'></span>
+        </div>
+        <div className='row'>
+          <span data-key="symbolic" className='fa fa-th-list toggle-layout'></span>
+          <span data-key="space">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span>
+          <span data-key="enter" className='fa fa-arrow-circle-down enter'></span>
+        </div>
+      </div>
+    )
+  }
+}
+
+class KeyboardSymbolic extends BaseKeyboard {
+  render () {
+    return (
+      <div onClick={this.handleKeystroke}
+        className='keyboard'>
+        <div className='row'>
+          <span>[</span>
+          <span>]</span>
+          <span>&#123;</span>
+          <span>&#125;</span>
+          <span>#</span>
+          <span>%</span>
+          <span>^</span>
+          <span>*</span>
+          <span>+</span>
+          <span>=</span>
+        </div>
+        <div className='row'>
+          <span>_</span>
+          <span>\</span>
+          <span>|</span>
+          <span>~</span>
+          <span>&lt;</span>
+          <span>&gt;</span>
+          <span>$</span>
+          <span>&euro;</span>
+          <span>&pound;</span>
+          <span>&middot;</span>
+        </div>
+        <div className='row'>
+          <span data-key="shift">#+=</span>
+          <span>.</span>
+          <span>,</span>
+          <span>?</span>
+          <span>!</span>
+          <span>&apos;</span>
+          <span data-key="backspace" className='fa fa-arrow-circle-left backspace'></span>
+        </div>
+        <div className='row'>
+          <span data-key="symbolic" className='fa fa-th-list toggle-layout'></span>
+          <span data-key="space">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </span>
           <span data-key="enter" className='fa fa-arrow-circle-down enter'></span>
         </div>
       </div>
