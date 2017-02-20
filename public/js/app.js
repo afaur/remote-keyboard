@@ -14,7 +14,7 @@ class Style extends Component {
   }
 }
 
-class Keyboard extends Component {
+class KeyboardContainer extends Component {
 
   constructor (props) {
     super(props)
@@ -29,31 +29,22 @@ class Keyboard extends Component {
         console.log('logged in')
       })
       .catch((err) => { console.log(err.message) })
-    this.handleClick = this.handleClick.bind(this)
-    this.handleWsOpen = this.handleWsOpen.bind(this)
-    this.handleWsClose = this.handleWsClose.bind(this)
-    this.handleWsError = this.handleWsError.bind(this)
   }
 
-  handleWsOpen () {
+  handleWsOpen = () => {
     console.log('WebSocket open')
   }
 
-  handleWsClose () {
+  handleWsClose = () => {
     console.log('WebSocket close')
   }
 
-  handleWsError () {
+  handleWsError = () => {
     console.log('WebSocket error')
   }
 
-  handleClick (evt) {
-    if (evt.target.dataset && evt.target.dataset.key) {
-      return this.ws.send(evt.target.dataset.key)
-    } else if (evt.target.innerText) {
-      return this.ws.send(evt.target.innerText)
-    }
-    console.warn('Key not found', evt.target)
+  handleKeystroke = (value) => {
+    this.ws.send(value)
   }
 
   render () {
@@ -72,7 +63,47 @@ class Keyboard extends Component {
     `
 
     return (
-      <div onClick={this.handleClick}
+      <KeyboardLowerCase handleKeystroke={this.handleKeystroke} />
+    )
+  }
+}
+
+class KeyboardLowerCase extends Component {
+
+  static propTypes = {
+    handleKeystroke: React.PropTypes.func.isRequired,
+  }
+
+  constructor (props) {
+    super(props)
+  }
+
+  handleKeystroke = (e) => {
+    if (e.target.dataset && e.target.dataset.key) {
+      return this.props.handleKeystroke(e.target.dataset.key)
+    } else if (e.target.innerText) {
+      return this.props.handleKeystroke(e.target.innerText)
+    }
+    console.warn('Key not found', e.target)
+  }
+
+  render () {
+    const css = `
+      .keyboard {
+        width: 600px;
+        margin: 0 auto;
+        text-align: center;
+      }
+      .keyboard .row span {
+        display: inline-block;
+        border: 1px solid black;
+        padding: 10px 15px;
+        margin: 5px;
+      }
+    `
+
+    return (
+      <div onClick={this.handleKeystroke}
         className='keyboard'>
         <Style css={css} />
         <div className='row'>
@@ -150,7 +181,7 @@ class Home extends Component {
     return (
       <div className='home'>
         <div id='control-wrapper'>
-          <Keyboard />
+          <KeyboardContainer />
         </div>
       </div>
     )
