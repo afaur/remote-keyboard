@@ -35,6 +35,10 @@ class KeyboardContainer extends Component {
         shift: false,
         symbolic: false,
       }
+    document.addEventListener('touchstart', (e) => {
+      e.preventDefault()
+      e.target.click()
+    })
   }
 
   handleWsOpen = () => {
