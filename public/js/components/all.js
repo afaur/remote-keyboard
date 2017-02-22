@@ -2,15 +2,29 @@ import React, { Component } from 'react'
 
 class BaseKeyboard extends Component {
   static propTypes = {
-    handleTouchstart: React.PropTypes.func.isRequired,
+    handleTouchStart: React.PropTypes.func.isRequired,
+    handleTouchEnd: React.PropTypes.func.isRequired,
   }
 
-  handleTouchstart = (e) => {
+  handleTouchStart = (e) => {
+    e.preventDefault()
     if (e.target.tagName === 'SPAN') {
       if (e.target.dataset && e.target.dataset.key) {
-        return this.props.handleTouchstart(e.target.dataset.key)
+        return this.props.handleTouchStart(e.target.dataset.key)
       } else if (e.target.innerText) {
-        return this.props.handleTouchstart(e.target.innerText)
+        return this.props.handleTouchStart(e.target.innerText)
+      }
+      console.warn('Key not found', e.target)
+    }
+  }
+
+  handleTouchEnd = (e) => {
+    e.preventDefault()
+    if (e.target.tagName === 'SPAN') {
+      if (e.target.dataset && e.target.dataset.key) {
+        return this.props.handleTouchEnd(e.target.dataset.key)
+      } else if (e.target.innerText) {
+        return this.props.handleTouchEnd(e.target.innerText)
       }
       console.warn('Key not found', e.target)
     }
@@ -20,7 +34,9 @@ class BaseKeyboard extends Component {
 class KeyboardUpperCase extends BaseKeyboard {
   render () {
     return (
-      <div onClick={this.handleTouchstart}
+      <div
+        onTouchStart={this.handleTouchStart}
+        onTouchEnd={this.handleTouchEnd}
         className='keyboard'>
         <div className='row'>
           <span>Q</span>
@@ -76,7 +92,9 @@ class KeyboardUpperCase extends BaseKeyboard {
 class KeyboardLowerCase extends BaseKeyboard {
   render () {
     return (
-      <div onClick={this.handleTouchstart}
+      <div
+        onTouchStart={this.handleTouchStart}
+        onTouchEnd={this.handleTouchEnd}
         className='keyboard'>
         <div className='row'>
           <span>q</span>
@@ -132,7 +150,9 @@ class KeyboardLowerCase extends BaseKeyboard {
 class KeyboardNumeric extends BaseKeyboard {
   render () {
     return (
-      <div onClick={this.handleTouchstart}
+      <div
+        onTouchStart={this.handleTouchStart}
+        onTouchEnd={this.handleTouchEnd}
         className='keyboard'>
         <div className='row'>
           <span>1</span>
@@ -185,7 +205,9 @@ class KeyboardNumeric extends BaseKeyboard {
 class KeyboardSymbolic extends BaseKeyboard {
   render () {
     return (
-      <div onClick={this.handleTouchstart}
+      <div
+        onTouchStart={this.handleTouchStart}
+        onTouchEnd={this.handleTouchEnd}
         className='keyboard'>
         <div className='row'>
           <span>[</span>

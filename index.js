@@ -56,11 +56,15 @@ const wss = new WebSocket.Server({
 wss.on('connection', (ws) => {
   ws.on('message', (msg) => {
     const session = ws.upgradeReq.session
-    console.log(`WS message ${msg} from user ${session.userId}`)
-    console.log(msg)
-    robot.keyTap(msg)
-    // TODO: Change to keyToggle using touch events
-    // robot.keyToggle(lastKey, 'up/down')
+    let data = JSON.parse(msg)
+    console.log(`WS key: ${data.key} type: ${data.type} from user ${session.userId}`)
+    if (data.type === 'start') {
+      robot.keyToggle(data.key, 'down')
+    } else if (data.type === 'end') {
+      robot.keyToggle(data.key, 'up')
+    } else {
+      robot.keyTap(data.key)
+    }
   })
 })
 

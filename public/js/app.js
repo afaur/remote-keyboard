@@ -43,10 +43,6 @@ class KeyboardContainer extends Component {
         shift: false,
         symbolic: false,
       }
-    document.addEventListener('touchstart', (e) => {
-      e.preventDefault()
-      e.target.click()
-    })
   }
 
   handleWsOpen = () => {
@@ -61,7 +57,7 @@ class KeyboardContainer extends Component {
     console.log('WebSocket error')
   }
 
-  handleTouchstart = (value) => {
+  handleTouchStart = (value) => {
     if (value === 'shift') {
       this.setState({
         shift: !this.state.shift,
@@ -71,12 +67,28 @@ class KeyboardContainer extends Component {
         numeric: !this.state.numeric,
       })
     } else {
-      this.ws.send(value)
+      this.ws.send(
+        JSON.stringify({
+          type: 'start',
+          key: value,
+        })
+      )
       if (!this.state.numeric) {
         this.setState({
           shift: false,
         })
       }
+    }
+  }
+
+  handleTouchEnd = (value) => {
+    if (value !== 'shift' || value !== 'numeric') {
+      this.ws.send(
+        JSON.stringify({
+          type: 'end',
+          key: value,
+        })
+      )
     }
   }
 
@@ -109,7 +121,10 @@ class KeyboardContainer extends Component {
     return (
       <div>
         <Style css={css} />
-        <CurrentKeyboard handleTouchstart={this.handleTouchstart} />
+        <CurrentKeyboard
+          handleTouchStart={this.handleTouchStart}
+          handleTouchEnd={this.handleTouchEnd}
+        />
       </div>
     )
   }
