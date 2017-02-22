@@ -59,6 +59,8 @@ wss.on('connection', (ws) => {
     console.log(`WS message ${msg} from user ${session.userId}`)
     console.log(msg)
     robot.keyTap(msg)
+    // TODO: Change to keyToggle using touch events
+    // robot.keyToggle(lastKey, 'up/down')
   })
 })
 
