@@ -31,6 +31,80 @@ class BaseKeyboard extends Component {
   }
 }
 
+class KeyboardGame extends BaseKeyboard {
+  render () {
+    return (
+      <div
+        onTouchStart={this.handleTouchStart}
+        onTouchEnd={this.handleTouchEnd}
+        className='interface gamepad'>
+
+        <span className='direction control'>
+
+          <span data-key='left' className='left'>
+            <span data-key='left' className='arrow'> </span>
+          </span>
+
+          <span data-key='up' className='up'>
+            <span data-key='up' className='arrow'> </span>
+          </span>
+
+          <span data-key='down' className='down'>
+            <span data-key='down' className='arrow'></span>
+          </span>
+
+          <span data-key='right' className='right'>
+            <span data-key='right' className='arrow'> </span>
+          </span>
+
+        </span>
+
+        <span className='command control'>
+
+          <span data-key='x' className='x'>
+            <span data-key='x' className='outer'>
+              <span data-key='x' className='inner'></span>
+            </span>
+          </span>
+
+          <span data-key='y' className='y'>
+            <span data-key='y' className='outer'>
+              <span data-key='y' className='inner'></span>
+            </span>
+          </span>
+
+          <span data-key='b' className='b'>
+            <span data-key='b' className='outer'>
+              <span data-key='b' className='inner'></span>
+            </span>
+          </span>
+
+          <span data-key='a' className='a'>
+            <span data-key='a' className='outer'>
+              <span data-key='a' className='inner'></span>
+            </span>
+          </span>
+
+        </span>
+
+        <span className='option control'>
+          <span data-key=','></span>
+          <span data-key='.'></span>
+        </span>
+
+        <span className='aux-left control'>
+          <span data-key='l'></span>
+        </span>
+
+        <span className='aux-right control'>
+          <span data-key='r'></span>
+        </span>
+
+      </div>
+    )
+  }
+}
+
 class KeyboardUpperCase extends BaseKeyboard {
   render () {
     return (
@@ -257,4 +331,4 @@ class KeyboardSymbolic extends BaseKeyboard {
   }
 }
 
-export { KeyboardSymbolic, KeyboardNumeric, KeyboardUpperCase, KeyboardLowerCase }
+export { KeyboardGame, KeyboardSymbolic, KeyboardNumeric, KeyboardUpperCase, KeyboardLowerCase }

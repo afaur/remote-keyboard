@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { Link, Router, Route, IndexRoute, browserHistory } from 'react-router'
-import { KeyboardSymbolic, KeyboardNumeric, KeyboardUpperCase, KeyboardLowerCase } from './components/all.js'
+import { KeyboardGame, KeyboardSymbolic, KeyboardNumeric, KeyboardUpperCase, KeyboardLowerCase } from './components/all.js'
 
 require('../css/style.scss')
 
 const KeyboardComponents = {
+  gamepad: KeyboardGame,
   symbolic: KeyboardSymbolic,
   numeric: KeyboardNumeric,
   upper: KeyboardUpperCase,
@@ -116,7 +117,9 @@ class KeyboardContainer extends Component {
       }
     `
 
-    const CurrentKeyboard = KeyboardComponents[this.getKeyboard()];
+    // Temporarily only use gamepad
+    //const CurrentKeyboard = KeyboardComponents[this.getKeyboard()]
+    const CurrentKeyboard = KeyboardComponents['gamepad']
 
     return (
       <div>

@@ -1,4 +1,4 @@
-.keyboard {
+.interface {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -6,4 +6,189 @@
   -ms-user-select: none;
   user-select: none;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+.keyboard {}
+
+.gamepad {
+  position: absolute;
+  display: inline-block;
+  background-color: #d4d4d5;
+  width: 650px !important;
+  height: 360px !important;
+  border-radius: 15px;
+}
+
+.control {
+  position: absolute;
+  display: inline-block;
+  width: 230px;
+  height: 280px;
+  zoom: 1.2;
+}
+
+// Direction Control
+.direction {
+  top: 10px;
+  left: 5px;
+}
+
+.direction > span {
+  position: absolute;
+  display: inline-block;
+}
+
+span > .arrow {
+  background-color: #3d3d3d;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  border-radius: 50px;
+  width: 100px;
+  height: 100px;
+}
+
+.direction > .right {
+  top: 90px;
+  left: 128px;
+}
+
+.right > .arrow {
+  background: linear-gradient(to right, #565656 0%,#2f2f30 100%);
+}
+
+.direction > .down {
+  top: 171px;
+  left: 63px;
+}
+
+.down > .arrow {
+  background: linear-gradient(to bottom, #565656 0%,#2f2f30 100%);
+}
+
+.direction > .left {
+  top: 90px;
+  left: 0px;
+}
+
+.left > .arrow {
+  background: linear-gradient(to left, #565656 0%,#2f2f30 100%);
+}
+
+.direction > .up {
+  top: 10px;
+  left: 64px;
+}
+
+.up > .arrow {
+  background: linear-gradient(to top, #565656 0%,#2f2f30 100%);
+}
+
+// Option Control
+.option {
+  width: 160px;
+  height: 40px;
+  top: 220px;
+  left: 190px;
+}
+
+// Aux Control
+.aux-left {
+  width: 50px;
+  height: 50px;
+  top: 5px;
+  left: 5px;
+}
+
+.aux-left > span {
+  position: absolute;
+  display: inline-block;
+  background-color: #787c7f;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.aux-right {
+  width: 50px;
+  height: 50px;
+  top: 5px;
+  right: 5px;
+}
+
+.aux-right > span {
+  position: absolute;
+  display: inline-block;
+  background-color: #787c7f;
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+}
+
+.option > span:first-child {
+  background-color: #565656;
+  width: 70px;
+  height: 40px;
+  margin-right: 5px;
+  border-radius: 50px;
+}
+
+.option > span {
+  background-color: #565656;
+  width: 70px;
+  height: 40px;
+  margin-left: 5px;
+  float: left;
+  border-radius: 50px;
+}
+
+// Command Control
+.command {
+  top: 10px;
+  left: 310px;
+}
+
+.command > span {
+  position: absolute;
+  display: inline-block;
+}
+
+.command > .a {
+  top: 90px;
+  left: 128px;
+}
+
+.command > .b {
+  top: 185px;
+  left: 56px;
+}
+
+.command > .x {
+  top: 90px;
+  left: -20px;
+}
+
+.command > .y {
+  top: -5px;
+  left: 56px;
+}
+
+span > .outer {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  background-color: #5329a2;
+  border-radius: 50px;
+  width: 100px;
+  height: 100px;
+}
+
+.outer > .inner {
+  position: relative;
+  display: inline-block;
+  background-color: #5d2db3;
+  border-radius: 50px;
+  top: -40px;
+  width: 100px;
+  height: 100px;
 }
